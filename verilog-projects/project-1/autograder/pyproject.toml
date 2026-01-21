@@ -1,0 +1,9 @@
+[project]
+name = "project-1-autograder"
+version = "0.1.0"
+description = "verifies each submitted gate"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gradescope-utils>=0.5.0",
+]

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /autograder/grader
+mkdir /autograder/results
+mkdir /autograder/source
+find /autograder/submission -name '*.v' -exec cp {} /autograder/source/ \;
+
+uv run src/run_tests.py
