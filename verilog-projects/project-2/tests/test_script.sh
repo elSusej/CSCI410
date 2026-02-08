@@ -23,7 +23,7 @@ do
     }
 
     iverilog -i -o /tmp/${TEST}_test.vvp ${TEST}_test.v ${LIB_FILES} || continue
-    vvp /tmp/${TEST}_test.vvp 2> /dev/null 1> /tmp/${TEST}_test.out 2> /dev/null
+    vvp /tmp/${TEST}_test.vvp 1> /tmp/${TEST}_test.out 2> /dev/null
     diff /tmp/${TEST}_test.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && PASSED+=(${TEST}) || FAILED+=(${TEST})
 done
 
