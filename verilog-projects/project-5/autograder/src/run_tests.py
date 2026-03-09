@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     try:
         with open('/autograder/results/results.json', 'w') as f:
-            JSONTestRunner(stream=f, verbosity=2, buffer=True).run(suite)
+            JSONTestRunner(stream=f, verbosity=2, buffer=True, stdout_visibility='visible').run(suite)
     except:
         print("Not running in docker!")
         unittest.TextTestRunner().run(suite)

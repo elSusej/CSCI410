@@ -4,7 +4,7 @@
 SCRIPT_DIR=$( dirname -- "${BASH_SOURCE[0]}" )
 pushd ${SCRIPT_DIR} &> /dev/null
 
-TESTS=("bit" "register" "pc" "ram8" "ram64" "ram512" "ram4k" "ram16k")
+TESTS=("cpu_external" "computer_add" "computer_max" "computer_rect")
 PASSED=()
 FAILED=()
 
@@ -22,8 +22,8 @@ do
         continue
     }
 
-    iverilog -i -o /tmp/${TEST}_test.vvp ${TEST}_test.v ${LIB_FILES} || continue
-    vvp /tmp/${TEST}_test.vvp 2> /dev/null | head -n -1 1> /tmp/${TEST}_test.out 2> /dev/null
+    iverilog -i -o /tmp/${TEST}_test.vvp ${TEST}_test.v -l muxlib.v -l nand.v -l dff.v -l computer.v -l memory.v ${LIB_FILES} || continue
+    vvp /tmp/${TEST}_test.vvp 2> /dev/null | sed '/\$finish called/d' 1> /tmp/${TEST}_test.out 2> /dev/null
     diff /tmp/${TEST}_test.out expected-outputs/${TEST}.cmp -qsw --strip-trailing-cr &> /dev/null && PASSED+=(${TEST}) || FAILED+=(${TEST})
 done
 
