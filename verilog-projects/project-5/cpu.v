@@ -27,8 +27,7 @@ module student_cpu (
     output writeM,
     output [14:0] address, pc,
     output signed [15:0] ARegister, DRegister // used so test scripts can see what's going on
-);
-    
+); 
 
     wire [15:0] Areg_in, Areg_out, Dreg_out, ALU_out, ALU_yIn, pc_long;
     wire [31:0] AInputMuxBus, ALU_yMuxBus;
