@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Assembler (WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assembler",
+            "args": ["Mult.asm"], //change if want to assemble different file
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "build-assembler"
+        }
+    ],
+        "setupCommands": [ //remove whole setupCommands section and preceding comma if no worky
+    {
+        "description": "Enable pretty-printing",
+        "text": "-enable-pretty-printing",
+        "ignoreFailures": true
+    }
+]
+}
