@@ -2,16 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Assembler (WSL)",
+            "name": "Debug VMTranslator (WSL)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Assembler",
-            "args": ["Mult.asm"], //change if want to assemble different file
+            "program": "${workspaceFolder}/VMTranslator", //change if want to debug different executable
+            "args": ["BasicTest.vm"], //change if want to translate different file
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb",
-            "preLaunchTask": "build-assembler"
+            "preLaunchTask": "build-VMTranslator" //make sure this matches the name of the task in tasks.json
         }
     ],
         "setupCommands": [ 
