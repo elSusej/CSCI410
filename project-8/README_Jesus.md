@@ -1,4 +1,4 @@
 Name: Jesus Ledezma
-References: GeeksforGeeks, (passing in pointer vs by reference) and ChatGPT (how vm language works)
+References: Lecture 17 (HEAVILY used for return/function/call translation) and Google's Gemini (for C++ filesystem syntax)
 Time Spent: ~7-8 hours
-Notes: This project was fairly straightforward, but I didn't initially understand a lot of the hack vm language's functionality. 
+Notes: This project was fairly tedious and took some while to wrap my head around. Ultimately works now tho (i hope)

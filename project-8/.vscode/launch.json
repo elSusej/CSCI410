@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/VMTranslator", //change if want to debug different executable
-            "args": ["BasicTest.vm"], //change if want to translate different file
+            "args": ["FibonacciElement"], //change if want to translate different file
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "MIMode": "gdb",

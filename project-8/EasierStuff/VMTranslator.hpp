@@ -40,10 +40,10 @@ std::map<std::string, std::string> segmentBase = {
 };
 
 std::vector<VMCommand> parser(std::ifstream& vmFile);
-void translator(std::vector<VMCommand> commands, std::ofstream& asmFile, std::string& currentFileName);
+void translator(std::vector<VMCommand> commands, std::ofstream& asmFile);
 void translateArithmeticLogical(VMCommand& cmd, std::ofstream& asmFile);
-void translatePush(VMCommand& cmd, std::ofstream& asmFile, std::string& currentFileName);
-void translatePop(VMCommand& cmd, std::ofstream& asmFile, std::string& currentFileName);
+void translatePush(VMCommand& cmd, std::ofstream& asmFile);
+void translatePop(VMCommand& cmd, std::ofstream& asmFile);
 void translateIf(VMCommand& cmd, std::ofstream& asmFile);
 void translateFunction(VMCommand& cmd, std::ofstream& asmFile);
 void translateReturn(std::ofstream& asmFile);

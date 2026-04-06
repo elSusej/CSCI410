@@ -1,48 +1,27 @@
 #include "VMTranslator.hpp"
 
-using namespace std; //FIXME: if problematic
-namespace fs = filesystem;
+using namespace std;
 int main(int argc, char** argv) {
         if(argc != 2) {
-                cout <<"usage: vmtranslator <directory_path>" << endl;
+                cout <<"usage: vmtranslator prog.vm" << endl;
                 return -1;
         }
 
-        fs::path inputDir(argv[1]);
-        string folderName = inputDir.filename().string();
-        fs::path outputFilePath = inputDir / (folderName + ".asm");  //if output file is supposed to be in same dir as in files, otherwise change/FIXME
-        ofstream asmFile(outputFilePath);
+        string input_file = argv[1];
+        string output_file = input_file;
+        size_t pos = output_file.find(".vm");
+        output_file.replace(pos, 4, ".asm");
+        ifstream vmFile(input_file);
+        ofstream asmFile(output_file);
 
-        //add bootstrap code here
-        asmFile << "// Bootstrap code\n"
-                << "@256\n"
-                << "D=A\n"
-                << "@SP\n"
-                << "M=D\n"; //SP = 256
+        //add static to segmentBase map, ie filename up to vm
+        string fileNameSubstr= input_file.substr(0, pos);
+        segmentBase["static"] = fileNameSubstr;
 
-        currentFunction = "OS"; //dummy function name 
-        VMCommand bootCall = {C_CALL, "Sys.init", 0};
-        translateCall(bootCall, asmFile);
-
-        vector<fs::path> vmFilePaths;
-        for (const auto &entry : fs::directory_iterator(inputDir)) {
-                if (entry.path().extension() == ".vm"){
-                        vmFilePaths.push_back(entry.path());
-                }
-        }
-
-        for (const auto &vmFilePath : vmFilePaths) {
-                ifstream vmFile(vmFilePath);
-                // Stem is the filename without extension (e.g., "Main" from "Main.vm")
-                // Used for static segment logic
-                string vmFileName = vmFilePath.stem().string();
-
-                vector<VMCommand> commands = parser(vmFile);
-                translator(commands, asmFile, vmFileName); 
-
-                vmFile.close();
-        }
+        vector<VMCommand> commands = parser(vmFile); //currently adds previous arg2 of C_POP/C_PUSH commands to next C_ARITHMETIC cmd, but this will be ignored anyways
+        translator(commands, asmFile);
         
+        vmFile.close();
         asmFile.close();
 }
 
@@ -114,17 +93,17 @@ vector<VMCommand> parser(ifstream& vmFile) {
         return commands;
 }
 
-void translator(vector<VMCommand> commands, ofstream& asmFile, string& currentFileName) {
+void translator(vector<VMCommand> commands, ofstream& asmFile) {
         for (VMCommand& cmd : commands) {
                 switch (cmd.type) {
                         case C_ARITHMETIC:
                                 translateArithmeticLogical(cmd, asmFile);
                                 break;
                         case C_PUSH:
-                                translatePush(cmd, asmFile, currentFileName);
+                                translatePush(cmd, asmFile);
                                 break;
                         case C_POP:
-                                translatePop(cmd, asmFile, currentFileName);
+                                translatePop(cmd, asmFile);
                                 break;
                         case C_LABEL:
                                 asmFile << "(" << currentFunction << "$" << cmd.arg1 << ")" << endl; // globally unique label for label
@@ -211,7 +190,7 @@ void translateArithmeticLogical(VMCommand& cmd, ofstream& asmFile) {
 
 }
 
-void translatePush(VMCommand& cmd, ofstream& asmFile, string& currentFileName) {
+void translatePush(VMCommand& cmd, ofstream& asmFile) {
         string targetSegment;
         asmFile << "// push " << cmd.arg1 << " " << cmd.arg2 << endl;
         switch (cmd.arg1[0]) {
@@ -225,7 +204,7 @@ void translatePush(VMCommand& cmd, ofstream& asmFile, string& currentFileName) {
                                 << "M=M+1" << endl; // SP++
                         break;
                 case 's': //static
-                        targetSegment = currentFileName + "." + to_string(cmd.arg2); //static variables become a memeory address in assembler process
+                        targetSegment = segmentBase[cmd.arg1] + "." + to_string(cmd.arg2); //static variables become a memeory address in assembler process
                         asmFile << "@" << targetSegment << "\n"
                                 << "D=M" << "\n" // D = value to push
                                 << "@SP" << "\n"
@@ -260,12 +239,12 @@ void translatePush(VMCommand& cmd, ofstream& asmFile, string& currentFileName) {
         }
 }
 
-void translatePop(VMCommand& cmd, ofstream& asmFile, string& currentFileName) {
+void translatePop(VMCommand& cmd, ofstream& asmFile) {
         string targetSegment;
         asmFile << "// pop " << cmd.arg1 << " " << cmd.arg2 << endl;
         switch (cmd.arg1[0]) {
                 case 's': //static
-                        targetSegment = currentFileName + "." + to_string(cmd.arg2);
+                        targetSegment = segmentBase[cmd.arg1] + "." + to_string(cmd.arg2);
                         asmFile << "@SP" << "\n"
                                 << "AM=M-1" << "\n" // set address stored in stack pointer to 1 less than current(to get top of stack), and also store this in A
                                 << "D=M" << "\n"    // put *SP into D (top of stack into D)
@@ -372,12 +351,10 @@ void translateReturn(ofstream& asmFile) {
 }
 
 void translateCall(VMCommand& cmd, ofstream& asmFile) {
-        static int callCounter = 0; //need unique return labels for each call command to prevent jumping to wrong return label
         asmFile << "// call " << cmd.arg1 << " " << cmd.arg2 << endl;
-        string returnlabel = currentFunction + "$return." + cmd.arg1 + "." + to_string(callCounter++);
 
         asmFile << "// push return address to stack" << "\n"
-                << "@" << returnlabel << "\n"
+                << "@" << currentFunction << "$return." << cmd.arg1 << "\n" //FIXME: if we have multiple calls to the same function, return label will not be unique. See if this works for project and if not fix it
                 << "D=A" << "\n"
                 << "@SP" << "\n"
                 << "A=M" << "\n"
@@ -432,5 +409,5 @@ void translateCall(VMCommand& cmd, ofstream& asmFile) {
                 << "@" << cmd.arg1 << "\n"
                 << "0;JMP" << "\n"
                 << "// Declare return label" << "\n"
-                << "(" << returnlabel << ")" << endl;
+                << "(" << currentFunction << "$return." << cmd.arg1 << ")" << endl;
 }
