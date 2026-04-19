@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/JackAnalyzer", //change if want to debug different executable
-            "args": ["ArrayTest"], //change if want to compile different directory
+            "args": ["Square"], //change if want to compile different directory
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "MIMode": "gdb",

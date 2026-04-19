@@ -87,6 +87,7 @@ class JackTokenizer {
                 std::string getCurrentIdentifier();
                 int getCurrentInt();
                 std::string getCurrentString();
+                struct Token extraPeak();
         private:
                 std::vector<Token> tokens;
                 size_t currentTokenIndex = -1;
@@ -99,6 +100,7 @@ class CompilationEngine {
                 void compileClass();
                 void compileClassVarDec();
                 void compileSubroutine();
+                void compileType();
                 void compileParameterList();
                 void compileSubroutineBody();
                 void compileVarDec();
@@ -110,8 +112,10 @@ class CompilationEngine {
                 void compileReturnStatement();
                 void compileExpression(); //special, calls term
                 void compileTerm(); //special, not LL(1)
+                void compileSubroutineCall(bool isMethod);
                 int compileExpressionList();
-                void printIndents();
+                void printIndents() {for(int i = 0; i < indentLevel; i++) outputFile << "  ";};
+                bool isBinaryOp();
                 JackTokenizer& tokenizer;
                 std::ofstream& outputFile;
                 int indentLevel = 0;

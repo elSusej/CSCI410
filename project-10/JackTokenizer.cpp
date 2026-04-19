@@ -93,3 +93,7 @@ std::string JackTokenizer::getCurrentString(){
         }
         return tokens[currentTokenIndex].value;
 }
+
+struct Token JackTokenizer::extraPeak() {
+        return tokens[currentTokenIndex+1];
+}
