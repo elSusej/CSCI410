@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug JackAnalyzer (WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/JackAnalyzer", //change if want to debug different executable
+            "args": ["Square"], //change if want to compile different directory
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "build-JackAnalyzer" //make sure this matches the name of the task in tasks.json
+        }
+    ],
+        "setupCommands": [ 
+    {
+        "description": "Enable pretty-printing",
+        "text": "-enable-pretty-printing",
+        "ignoreFailures": true
+    }
+]
+}
