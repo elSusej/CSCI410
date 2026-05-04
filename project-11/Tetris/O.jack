@@ -1,0 +1,24 @@
+class O {
+    static Array tiles;
+
+    function void init() {
+        let tiles = Array.new(4);
+
+        // ■■
+        // ■■
+        let tiles[0] = true;
+        let tiles[1] = true;
+        let tiles[2] = true;
+        let tiles[3] = true;
+
+        return;
+    }
+
+    function Array tiles(int rotation) {
+        return tiles;
+    }
+
+    function int size() {
+        return 2;
+    }
+}

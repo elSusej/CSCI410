@@ -1,0 +1,37 @@
+function Main.main 2
+    call Tetromino.init 0
+    pop temp 0
+    call Grid.init 0
+    pop temp 0
+    call Random.init 0
+    pop temp 0
+label Main_0
+    push constant 1
+    neg
+    not
+    if-goto Main_1
+    push constant 0
+    pop local 1
+    call TetrisGame.new 0
+    pop local 0
+    push local 0
+    call TetrisGame.run 1
+    pop temp 0
+    push local 0
+    call TetrisGame.dispose 1
+    pop temp 0
+label Main_2
+    push local 1
+    push constant 128
+    eq
+    not
+    not
+    if-goto Main_3
+    call Keyboard.keyPressed 0
+    pop local 1
+    goto Main_2
+label Main_3
+    goto Main_0
+label Main_1
+    push constant 0
+    return

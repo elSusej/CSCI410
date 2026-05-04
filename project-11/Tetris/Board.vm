@@ -1,0 +1,385 @@
+function Board.new 2
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push constant 0
+pop this 3
+push this 2
+call Array.new 1
+pop this 4
+label WHILE_0
+push local 0
+push this 2
+lt
+not
+if-goto WHILE_END_0
+push local 0
+push this 4
+add
+push constant 10
+call Init.newArray 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_0
+label WHILE_END_0
+call Grid.drawOutline 0
+pop temp 0
+push pointer 0
+return
+function Board.dispose 2
+push argument 0
+pop pointer 0
+label WHILE_1
+push local 0
+push this 2
+lt
+not
+if-goto WHILE_END_1
+push local 0
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1     // push object named row
+call Array.dispose 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_1
+label WHILE_END_1
+push this 4     // push object named tiles
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Board.isFull 1
+push argument 0
+pop pointer 0
+push argument 1
+push constant 0
+lt
+push argument 1
+push constant 9
+gt
+or
+not
+if-goto IF_FALSE_0
+push constant 0
+not
+return
+goto IF_END_0
+label IF_FALSE_0
+label IF_END_0
+push argument 2
+push constant 0
+lt
+push argument 2
+push this 2
+push constant 1
+sub
+gt
+or
+not
+if-goto IF_FALSE_1
+push constant 0
+not
+return
+goto IF_END_1
+label IF_FALSE_1
+label IF_END_1
+push argument 2
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+return
+function Board.setFill 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
+return
+function Board.fill 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 2
+push constant 1
+sub
+gt
+not
+if-goto IF_FALSE_2
+push constant 0
+return
+goto IF_END_2
+label IF_FALSE_2
+label IF_END_2
+push argument 2
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+push this 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push pointer 0
+push argument 1
+push argument 2
+push this 3
+call Board.drawTile 4
+pop temp 0
+push constant 0
+return
+function Board.drawTile 2
+push argument 0
+pop pointer 0
+push this 0
+push constant 12
+push argument 1
+call Math.multiply 2
+add
+pop local 0
+push this 1
+push constant 12
+push this 2
+push argument 2
+push constant 1
+add
+sub
+call Math.multiply 2
+add
+pop local 1
+push local 0
+push local 1
+push argument 1
+push constant 3
+and
+push argument 3
+call Grid.drawTile 4
+pop temp 0
+push constant 0
+return
+function Board.clearFullLines 5
+push argument 0
+pop pointer 0
+label WHILE_2
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END_2
+push local 1
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 4
+push constant 0
+not
+pop local 3
+push constant 0
+pop local 2
+label WHILE_3
+push local 2
+push constant 10
+lt
+not
+if-goto WHILE_END_3
+push local 2
+push local 4
+add
+pop pointer 1
+push that 0
+not
+not
+if-goto IF_FALSE_3
+push constant 0
+pop local 3
+goto IF_END_3
+label IF_FALSE_3
+label IF_END_3
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_3
+label WHILE_END_3
+push local 3
+not
+if-goto IF_FALSE_4
+push local 0
+push constant 1
+add
+pop local 0
+push pointer 0
+push local 1
+push constant 1
+add
+call Board.shiftLines 2
+pop temp 0
+goto IF_END_4
+label IF_FALSE_4
+push local 1
+push constant 1
+add
+pop local 1
+label IF_END_4
+goto WHILE_2
+label WHILE_END_2
+push local 0
+return
+function Board.shiftLines 3
+push argument 0
+pop pointer 0
+label WHILE_4
+push argument 1
+push this 2
+lt
+not
+if-goto WHILE_END_4
+push argument 1
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 1
+push argument 1
+push constant 1
+sub
+push this 4
+add
+pop pointer 1
+push that 0
+pop local 2
+push constant 0
+pop local 0
+label WHILE_5
+push local 0
+push constant 10
+lt
+not
+if-goto WHILE_END_5
+push local 0
+push local 2
+add
+push local 0
+push local 1
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push local 1
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push pointer 0
+push local 0
+push argument 1
+push constant 1
+sub
+push local 0
+push local 2
+add
+pop pointer 1
+push that 0
+call Board.drawTile 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_5
+label WHILE_END_5
+push argument 1
+push constant 1
+add
+pop argument 1
+goto WHILE_4
+label WHILE_END_4
+push constant 0
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+label WHILE_6
+push local 0
+push constant 10
+lt
+not
+if-goto WHILE_END_6
+push pointer 0
+push local 0
+push argument 1
+push constant 0
+call Board.drawTile 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_6
+label WHILE_END_6
+push constant 0
+return
+function Board.clearLine 1
+push argument 0
+pop pointer 0
+label WHILE_7
+push local 0
+push constant 10
+lt
+not
+if-goto WHILE_END_7
+push pointer 0
+push local 0
+push argument 1
+push constant 0
+call Board.drawTile 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_7
+label WHILE_END_7
+push constant 0
+return

@@ -1,0 +1,152 @@
+class Board {
+    field int minX, minY, rows;
+    field boolean fill;
+    field Array tiles;
+
+    constructor Board new(int x, int y, int rowsArg) {
+        var int i, j;
+
+        let minX = x;
+        let minY = y;
+        let rows = rowsArg;
+        let fill = false;
+        let tiles = Array.new(rows);
+
+        while (i < rows) {
+            let tiles[i] = Init.newArray(10);
+            let i = i + 1;
+        }
+
+        do Grid.drawOutline();
+
+        return this;
+    }
+
+    method void dispose() {
+        var int i;
+        var Array row;
+
+        while (i < rows) {
+            let row = tiles[i];
+            do row.dispose();
+            let i = i + 1;
+        }
+
+        do tiles.dispose();
+        do Memory.deAlloc(this);
+
+        return;
+    }
+
+    method boolean isFull(int col, int row) {
+        var Array tileRow;
+
+        if ((col < 0) | (col > 9)) {
+            return true;
+        }
+
+        if ((row < 0) | (row > (rows - 1))) {
+            return true;
+        }
+
+        let tileRow = tiles[row];
+        return tileRow[col];
+    }
+
+    method void setFill(boolean fillArg) {
+        let fill = fillArg;
+        return;
+    }
+
+    method void fill(int col, int row) {
+        var Array tileRow;
+
+        if (row > (rows - 1)) {
+            return;
+        }
+
+        let tileRow = tiles[row];
+        let tileRow[col] = fill;
+
+        do drawTile(col, row, fill);
+        return;
+    }
+
+    method void drawTile(int col, int row, boolean fill) {
+        var int x, y;
+
+        let x = minX + (12 * col);
+        let y = minY + (12 * (rows - (row + 1)));
+
+        do Grid.drawTile(x, y, col & 3, fill);
+        return;
+    }
+
+    method int clearFullLines() {
+        var int cleared, i, j;
+        var boolean full;
+        var Array row;
+
+        while (i < rows) {
+            let row = tiles[i];
+            let full = true;
+            let j = 0;
+
+            while (j < 10) {
+                if (~row[j]) {
+                    let full = false;
+                }
+                let j = j + 1;
+            }
+
+            if (full) {
+                let cleared = cleared + 1;
+                do shiftLines(i + 1);
+            } else {
+                let i = i + 1;
+            }
+        }
+
+        return cleared;
+    }
+
+    method void shiftLines(int i) {
+        var int j;
+        var Array src, dst;
+
+        while (i < rows) {
+            let src = tiles[i];
+            let dst = tiles[i - 1];
+            let j = 0;
+
+            while (j < 10) {
+                let dst[j] = src[j];
+                let src[j] = false;
+                do drawTile(j, i - 1, dst[j]);
+                let j = j + 1;
+            }
+
+            let i = i + 1;
+        }
+
+        let j = 0;
+        let i = i - 1;
+
+        while (j < 10) {
+            // The last (topmost) line always ends up empty.
+            do drawTile(j, i, false);
+            let j = j + 1;
+        }
+
+        return;
+    }
+
+    method void clearLine(int row) {
+        var int col;
+        while (col < 10) {
+            do drawTile(col, row, false);
+            let col = col + 1;
+        }
+        return;
+    }
+}

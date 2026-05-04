@@ -34,7 +34,7 @@ JackTokenizer::JackTokenizer(std::ifstream& inputFile) {
                 } else if (match[2].matched) {
                         std::string matchedString = match[2].str();
                         if (matchedString == "<" || matchedString == ">" || matchedString == "&" || matchedString == "\"") {
-                                matchedString = xmlJackReplacements[matchedString];
+                                //matchedString = xmlJackReplacements[matchedString]; no more xml out
                         } 
                         t.value = matchedString;
                         t.type = JackTokenType::SYMBOL;

@@ -6,14 +6,7 @@
 #include <filesystem>
 #include <vector>
 #include <regex>
-#include <map> //for xml markup replacements
-
-inline std::map <std::string, std::string> xmlJackReplacements = { //inline make it so this definition isn't copied over to the start of every source cpp file
-        {"<", "&lt;"},
-        {">", "&gt;"},
-        {"\"", "&quot;"},
-        {"&", "&amp;"}
-};
+#include <map> 
 
 enum class JackTokenType { 
         KEYWORD,
@@ -51,6 +44,40 @@ enum class JackKeyword { //class is more strictly scope
         NULL_KEYWORD, 
         THIS
 };
+
+enum class SymbolKind { STATIC, FIELD, ARG, VAR, NONE }; //refers to segment in VM code
+
+struct SymbolEntry {
+    std::string type; // int, char, boolean, or className
+    SymbolKind kind; //where in mem?
+    int index;        // The 0-based offset within its kind (local 0, local 1 type shit)
+};
+
+class SymbolTable {
+public:
+    SymbolTable();
+
+    // Clears the subroutine-level map and resets ARG/VAR counters
+    void startSubroutine(); 
+
+    // Defines/adds a new identifier to appropriate symbol table
+    void define(const std::string& name, const std::string& type, SymbolKind kind);
+
+    // Returns the number of variables of a specific kind (needed for numLocals in VM)
+    int varCount(SymbolKind kind) { return counters[kind]; }
+
+    // Getters for usage in expressions/statements
+    SymbolKind kindOf(const std::string& name);
+    std::string typeOf(const std::string& name);
+    int indexOf(const std::string& name);
+
+private:
+    std::map<std::string, SymbolEntry> classScope;
+    std::map<std::string, SymbolEntry> subroutineScope;
+    std::map<SymbolKind, int> counters; // Tracks current index for STATIC, FIELD, ARG, VAR
+};
+
+
 
 inline std::map<std::string, JackKeyword> string2enumTable {
         {"class", JackKeyword::CLASS},
@@ -100,9 +127,9 @@ class CompilationEngine {
                 void compileClass();
                 void compileClassVarDec();
                 void compileSubroutine();
-                void compileType();
+                std::string compileType();
                 void compileParameterList();
-                void compileSubroutineBody();
+                void compileSubroutineBody(JackKeyword subroutineType, std::string subroutineName);
                 void compileVarDec();
                 void compileStatements();
                 void compileLetStatement();
@@ -114,11 +141,12 @@ class CompilationEngine {
                 void compileTerm(); //special, not LL(1)
                 void compileSubroutineCall(bool isMethod);
                 int compileExpressionList();
-                void printIndents() {for(int i = 0; i < indentLevel; i++) outputFile << "  ";};
                 bool isBinaryOp();
+                std::string getSegment(const std::string& name);
                 JackTokenizer& tokenizer;
                 std::ofstream& outputFile;
-                int indentLevel = 0;
+                SymbolTable symbolTable;
+                std::string currentClassName;
 };
 
 #endif

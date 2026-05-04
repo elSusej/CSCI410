@@ -1,0 +1,26 @@
+function Init.newArray 2
+push argument 0
+call Array.new 1
+pop local 1
+label WHILE_14
+push local 0
+push argument 0
+lt
+not
+if-goto WHILE_END_14
+push local 0
+push local 1
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_14
+label WHILE_END_14
+push local 1
+return

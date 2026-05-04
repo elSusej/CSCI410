@@ -1,0 +1,37 @@
+class I {
+    static Array tiles;
+
+    function void init() {
+        var Array tmp;
+        let tiles = Array.new(2);
+
+        // ■■■■
+        let tmp = Init.newArray(16);
+        let tmp[4] = true;
+        let tmp[5] = true;
+        let tmp[6] = true;
+        let tmp[7] = true;
+        let tiles[0] = tmp;
+
+        // ■
+        // ■
+        // ■
+        // ■
+        let tmp = Init.newArray(16);
+        let tmp[1] = true;
+        let tmp[5] = true;
+        let tmp[9] = true;
+        let tmp[13] = true;
+        let tiles[1] = tmp;
+
+        return;
+    }
+
+    function Array tiles(int rotation) {
+        return tiles[rotation & 1];
+    }
+
+    function int size() {
+        return 4;
+    }
+}
