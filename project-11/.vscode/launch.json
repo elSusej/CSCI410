@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/JackAnalyzer", //change if want to debug different executable
-            "args": ["Tetris"], //change if want to compile different directory
+            "args": ["Testing"], //change if want to compile different directory
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "MIMode": "gdb",
