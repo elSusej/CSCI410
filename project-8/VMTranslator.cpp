@@ -1,6 +1,6 @@
 #include "VMTranslator.hpp"
 
-using namespace std; //FIXME: if problematic
+using namespace std;
 namespace fs = filesystem;
 int main(int argc, char** argv) {
         if(argc != 2) {
@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
         fs::path inputDir(argv[1]);
         string folderName = inputDir.filename().string();
-        fs::path outputFilePath = inputDir / (folderName + ".asm");  //if output file is supposed to be in same dir as in files, otherwise change/FIXME
+        fs::path outputFilePath = inputDir / (folderName + ".asm");  //output file is supposed to be in same dir as in files
         ofstream asmFile(outputFilePath);
 
         //add bootstrap code here

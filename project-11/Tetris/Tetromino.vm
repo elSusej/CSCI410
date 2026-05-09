@@ -1,0 +1,651 @@
+function Tetromino.init 0
+call I.init 0
+pop temp 0
+call J.init 0
+pop temp 0
+call L.init 0
+pop temp 0
+call O.init 0
+pop temp 0
+call S.init 0
+pop temp 0
+call T.init 0
+pop temp 0
+call Z.init 0
+pop temp 0
+push constant 0
+return
+function Tetromino.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push argument 3
+pop this 4
+push constant 0
+pop this 3
+push pointer 0
+return
+function Tetromino.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Tetromino.reset 5
+push argument 0
+pop pointer 0
+push argument 1
+pop this 0
+push argument 2
+pop this 1
+push argument 3
+pop this 2
+push constant 0
+pop this 3
+push this 0
+push this 3
+call Tetromino.tiles 2
+pop local 4
+push this 0
+call Tetromino.size 1
+pop local 3
+label WHILE_20
+push local 1
+push local 3
+lt
+not
+if-goto WHILE_END_20
+push constant 0
+pop local 0
+label WHILE_21
+push local 0
+push local 3
+lt
+not
+if-goto WHILE_END_21
+push local 2
+push local 4
+add
+pop pointer 1
+push that 0
+not
+if-goto IF_FALSE_28
+push this 4     // push object named board
+push this 1
+push local 0
+add
+push this 2
+push local 1
+sub
+call Board.isFull 3
+not
+if-goto IF_FALSE_29
+push constant 0
+return
+goto IF_END_29
+label IF_FALSE_29
+label IF_END_29
+goto IF_END_28
+label IF_FALSE_28
+label IF_END_28
+push local 0
+push constant 1
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_21
+label WHILE_END_21
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_20
+label WHILE_END_20
+push constant 0
+not
+return
+function Tetromino.show 5
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+call Tetromino.tiles 2
+pop local 4
+push this 0
+call Tetromino.size 1
+pop local 3
+push this 4     // push object named board
+push argument 1
+call Board.setFill 2
+pop temp 0
+label WHILE_22
+push local 1
+push local 3
+lt
+not
+if-goto WHILE_END_22
+push constant 0
+pop local 0
+label WHILE_23
+push local 0
+push local 3
+lt
+not
+if-goto WHILE_END_23
+push local 2
+push local 4
+add
+pop pointer 1
+push that 0
+not
+if-goto IF_FALSE_30
+push this 4     // push object named board
+push this 1
+push local 0
+add
+push this 2
+push local 1
+sub
+call Board.fill 3
+pop temp 0
+goto IF_END_30
+label IF_FALSE_30
+label IF_END_30
+push local 0
+push constant 1
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_23
+label WHILE_END_23
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_22
+label WHILE_END_22
+push constant 0
+return
+function Tetromino.step 7
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+call Tetromino.tiles 2
+pop local 6
+push this 0
+call Tetromino.size 1
+pop local 3
+push local 3
+push constant 1
+sub
+pop local 4
+label WHILE_24
+push local 1
+push local 3
+lt
+not
+if-goto WHILE_END_24
+push constant 0
+pop local 0
+label WHILE_25
+push local 0
+push local 3
+lt
+not
+if-goto WHILE_END_25
+push local 2
+push local 6
+add
+pop pointer 1
+push that 0
+pop local 5
+push local 1
+push local 4
+lt
+not
+if-goto IF_FALSE_31
+push local 5
+push local 2
+push local 3
+add
+push local 6
+add
+pop pointer 1
+push that 0
+and
+not
+if-goto IF_FALSE_32
+push constant 0
+pop local 5
+goto IF_END_32
+label IF_FALSE_32
+label IF_END_32
+goto IF_END_31
+label IF_FALSE_31
+label IF_END_31
+push local 5
+not
+if-goto IF_FALSE_33
+push this 4     // push object named board
+push this 1
+push local 0
+add
+push this 2
+push local 1
+sub
+push constant 1
+sub
+call Board.isFull 3
+not
+if-goto IF_FALSE_34
+push constant 0
+return
+goto IF_END_34
+label IF_FALSE_34
+label IF_END_34
+goto IF_END_33
+label IF_FALSE_33
+label IF_END_33
+push local 0
+push constant 1
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_25
+label WHILE_END_25
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_24
+label WHILE_END_24
+push pointer 0
+push constant 0
+call Tetromino.show 2
+pop temp 0
+push this 2
+push constant 1
+sub
+pop this 2
+push pointer 0
+push constant 0
+not
+call Tetromino.show 2
+pop temp 0
+push constant 0
+not
+return
+function Tetromino.move 7
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+call Tetromino.tiles 2
+pop local 6
+push this 0
+call Tetromino.size 1
+pop local 3
+push local 3
+push constant 1
+sub
+pop local 4
+label WHILE_26
+push local 1
+push local 3
+lt
+not
+if-goto WHILE_END_26
+push constant 0
+pop local 0
+label WHILE_27
+push local 0
+push local 3
+lt
+not
+if-goto WHILE_END_27
+push local 2
+push local 6
+add
+pop pointer 1
+push that 0
+pop local 5
+push argument 1
+push constant 0
+lt
+push local 0
+push constant 0
+gt
+and
+push argument 1
+push constant 0
+gt
+push local 0
+push local 4
+lt
+and
+or
+not
+if-goto IF_FALSE_35
+push local 5
+push local 2
+push argument 1
+add
+push local 6
+add
+pop pointer 1
+push that 0
+and
+not
+if-goto IF_FALSE_36
+push constant 0
+pop local 5
+goto IF_END_36
+label IF_FALSE_36
+label IF_END_36
+goto IF_END_35
+label IF_FALSE_35
+label IF_END_35
+push local 5
+not
+if-goto IF_FALSE_37
+push this 4     // push object named board
+push this 1
+push local 0
+add
+push argument 1
+add
+push this 2
+push local 1
+sub
+call Board.isFull 3
+not
+if-goto IF_FALSE_38
+push constant 0
+return
+goto IF_END_38
+label IF_FALSE_38
+label IF_END_38
+goto IF_END_37
+label IF_FALSE_37
+label IF_END_37
+push local 0
+push constant 1
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_27
+label WHILE_END_27
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_26
+label WHILE_END_26
+push pointer 0
+push constant 0
+call Tetromino.show 2
+pop temp 0
+push this 1
+push argument 1
+add
+pop this 1
+push pointer 0
+push constant 0
+not
+call Tetromino.show 2
+pop temp 0
+push constant 0
+return
+function Tetromino.rotate 7
+push argument 0
+pop pointer 0
+push this 0
+push this 3
+call Tetromino.tiles 2
+pop local 5
+push this 0
+call Tetromino.size 1
+pop local 3
+push this 3
+push argument 1
+add
+push constant 3
+and
+pop local 4
+push this 0
+push local 4
+call Tetromino.tiles 2
+pop local 6
+label WHILE_28
+push local 1
+push local 3
+lt
+not
+if-goto WHILE_END_28
+push constant 0
+pop local 0
+label WHILE_29
+push local 0
+push local 3
+lt
+not
+if-goto WHILE_END_29
+push local 2
+push local 6
+add
+pop pointer 1
+push that 0
+not
+if-goto IF_FALSE_39
+push local 2
+push local 5
+add
+pop pointer 1
+push that 0
+not
+not
+if-goto IF_FALSE_40
+push this 4     // push object named board
+push this 1
+push local 0
+add
+push this 2
+push local 1
+sub
+call Board.isFull 3
+not
+if-goto IF_FALSE_41
+push constant 0
+return
+goto IF_END_41
+label IF_FALSE_41
+label IF_END_41
+goto IF_END_40
+label IF_FALSE_40
+label IF_END_40
+goto IF_END_39
+label IF_FALSE_39
+label IF_END_39
+push local 0
+push constant 1
+add
+pop local 0
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_29
+label WHILE_END_29
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_28
+label WHILE_END_28
+push pointer 0
+push constant 0
+call Tetromino.show 2
+pop temp 0
+push local 4
+pop this 3
+push pointer 0
+push constant 0
+not
+call Tetromino.show 2
+pop temp 0
+push constant 0
+return
+function Tetromino.tiles 0
+push argument 0
+push constant 0
+eq
+not
+if-goto IF_FALSE_42
+push argument 1
+call I.tiles 1
+return
+goto IF_END_42
+label IF_FALSE_42
+label IF_END_42
+push argument 0
+push constant 1
+eq
+not
+if-goto IF_FALSE_43
+push argument 1
+call J.tiles 1
+return
+goto IF_END_43
+label IF_FALSE_43
+label IF_END_43
+push argument 0
+push constant 2
+eq
+not
+if-goto IF_FALSE_44
+push argument 1
+call L.tiles 1
+return
+goto IF_END_44
+label IF_FALSE_44
+label IF_END_44
+push argument 0
+push constant 3
+eq
+not
+if-goto IF_FALSE_45
+push argument 1
+call O.tiles 1
+return
+goto IF_END_45
+label IF_FALSE_45
+label IF_END_45
+push argument 0
+push constant 4
+eq
+not
+if-goto IF_FALSE_46
+push argument 1
+call S.tiles 1
+return
+goto IF_END_46
+label IF_FALSE_46
+label IF_END_46
+push argument 0
+push constant 5
+eq
+not
+if-goto IF_FALSE_47
+push argument 1
+call T.tiles 1
+return
+goto IF_END_47
+label IF_FALSE_47
+label IF_END_47
+push argument 1
+call Z.tiles 1
+return
+function Tetromino.size 0
+push argument 0
+push constant 0
+eq
+not
+if-goto IF_FALSE_48
+call I.size 0
+return
+goto IF_END_48
+label IF_FALSE_48
+label IF_END_48
+push argument 0
+push constant 1
+eq
+not
+if-goto IF_FALSE_49
+call J.size 0
+return
+goto IF_END_49
+label IF_FALSE_49
+label IF_END_49
+push argument 0
+push constant 2
+eq
+not
+if-goto IF_FALSE_50
+call L.size 0
+return
+goto IF_END_50
+label IF_FALSE_50
+label IF_END_50
+push argument 0
+push constant 3
+eq
+not
+if-goto IF_FALSE_51
+call O.size 0
+return
+goto IF_END_51
+label IF_FALSE_51
+label IF_END_51
+push argument 0
+push constant 4
+eq
+not
+if-goto IF_FALSE_52
+call S.size 0
+return
+goto IF_END_52
+label IF_FALSE_52
+label IF_END_52
+push argument 0
+push constant 5
+eq
+not
+if-goto IF_FALSE_53
+call T.size 0
+return
+goto IF_END_53
+label IF_FALSE_53
+label IF_END_53
+call Z.size 0
+return

@@ -1,0 +1,651 @@
+function Tetromino.init 0
+    call I.init 0
+    pop temp 0
+    call J.init 0
+    pop temp 0
+    call L.init 0
+    pop temp 0
+    call O.init 0
+    pop temp 0
+    call S.init 0
+    pop temp 0
+    call T.init 0
+    pop temp 0
+    call Z.init 0
+    pop temp 0
+    push constant 0
+    return
+function Tetromino.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push argument 2
+    pop this 2
+    push argument 3
+    pop this 4
+    push constant 0
+    pop this 3
+    push pointer 0
+    return
+function Tetromino.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Tetromino.reset 5
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 2
+    push constant 0
+    pop this 3
+    push this 0
+    push this 3
+    call Tetromino.tiles 2
+    pop local 4
+    push this 0
+    call Tetromino.size 1
+    pop local 3
+label Tetromino_0
+    push local 1
+    push local 3
+    lt
+    not
+    if-goto Tetromino_1
+    push constant 0
+    pop local 0
+label Tetromino_2
+    push local 0
+    push local 3
+    lt
+    not
+    if-goto Tetromino_3
+    push local 2
+    push local 4
+    add
+    pop pointer 1
+    push that 0
+    not
+    if-goto Tetromino_5
+    push this 4
+    push this 1
+    push local 0
+    add
+    push this 2
+    push local 1
+    sub
+    call Board.isFull 3
+    not
+    if-goto Tetromino_7
+    push constant 0
+    return
+    goto Tetromino_6
+label Tetromino_7
+label Tetromino_6
+    goto Tetromino_4
+label Tetromino_5
+label Tetromino_4
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Tetromino_2
+label Tetromino_3
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Tetromino_0
+label Tetromino_1
+    push constant 1
+    neg
+    return
+function Tetromino.show 5
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 3
+    call Tetromino.tiles 2
+    pop local 4
+    push this 0
+    call Tetromino.size 1
+    pop local 3
+    push this 4
+    push argument 1
+    call Board.setFill 2
+    pop temp 0
+label Tetromino_8
+    push local 1
+    push local 3
+    lt
+    not
+    if-goto Tetromino_9
+    push constant 0
+    pop local 0
+label Tetromino_10
+    push local 0
+    push local 3
+    lt
+    not
+    if-goto Tetromino_11
+    push local 2
+    push local 4
+    add
+    pop pointer 1
+    push that 0
+    not
+    if-goto Tetromino_13
+    push this 4
+    push this 1
+    push local 0
+    add
+    push this 2
+    push local 1
+    sub
+    call Board.fill 3
+    pop temp 0
+    goto Tetromino_12
+label Tetromino_13
+label Tetromino_12
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Tetromino_10
+label Tetromino_11
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Tetromino_8
+label Tetromino_9
+    push constant 0
+    return
+function Tetromino.step 7
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 3
+    call Tetromino.tiles 2
+    pop local 6
+    push this 0
+    call Tetromino.size 1
+    pop local 3
+    push local 3
+    push constant 1
+    sub
+    pop local 4
+label Tetromino_14
+    push local 1
+    push local 3
+    lt
+    not
+    if-goto Tetromino_15
+    push constant 0
+    pop local 0
+label Tetromino_16
+    push local 0
+    push local 3
+    lt
+    not
+    if-goto Tetromino_17
+    push local 2
+    push local 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 5
+    push local 1
+    push local 4
+    lt
+    not
+    if-goto Tetromino_19
+    push local 5
+    push local 2
+    push local 3
+    add
+    push local 6
+    add
+    pop pointer 1
+    push that 0
+    and
+    not
+    if-goto Tetromino_21
+    push constant 0
+    pop local 5
+    goto Tetromino_20
+label Tetromino_21
+label Tetromino_20
+    goto Tetromino_18
+label Tetromino_19
+label Tetromino_18
+    push local 5
+    not
+    if-goto Tetromino_23
+    push this 4
+    push this 1
+    push local 0
+    add
+    push this 2
+    push local 1
+    sub
+    push constant 1
+    sub
+    call Board.isFull 3
+    not
+    if-goto Tetromino_25
+    push constant 0
+    return
+    goto Tetromino_24
+label Tetromino_25
+label Tetromino_24
+    goto Tetromino_22
+label Tetromino_23
+label Tetromino_22
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Tetromino_16
+label Tetromino_17
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Tetromino_14
+label Tetromino_15
+    push pointer 0
+    push constant 0
+    call Tetromino.show 2
+    pop temp 0
+    push this 2
+    push constant 1
+    sub
+    pop this 2
+    push pointer 0
+    push constant 1
+    neg
+    call Tetromino.show 2
+    pop temp 0
+    push constant 1
+    neg
+    return
+function Tetromino.move 7
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 3
+    call Tetromino.tiles 2
+    pop local 6
+    push this 0
+    call Tetromino.size 1
+    pop local 3
+    push local 3
+    push constant 1
+    sub
+    pop local 4
+label Tetromino_26
+    push local 1
+    push local 3
+    lt
+    not
+    if-goto Tetromino_27
+    push constant 0
+    pop local 0
+label Tetromino_28
+    push local 0
+    push local 3
+    lt
+    not
+    if-goto Tetromino_29
+    push local 2
+    push local 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 5
+    push argument 1
+    push constant 0
+    lt
+    push local 0
+    push constant 0
+    gt
+    and
+    push argument 1
+    push constant 0
+    gt
+    push local 0
+    push local 4
+    lt
+    and
+    or
+    not
+    if-goto Tetromino_31
+    push local 5
+    push local 2
+    push argument 1
+    add
+    push local 6
+    add
+    pop pointer 1
+    push that 0
+    and
+    not
+    if-goto Tetromino_33
+    push constant 0
+    pop local 5
+    goto Tetromino_32
+label Tetromino_33
+label Tetromino_32
+    goto Tetromino_30
+label Tetromino_31
+label Tetromino_30
+    push local 5
+    not
+    if-goto Tetromino_35
+    push this 4
+    push this 1
+    push local 0
+    add
+    push argument 1
+    add
+    push this 2
+    push local 1
+    sub
+    call Board.isFull 3
+    not
+    if-goto Tetromino_37
+    push constant 0
+    return
+    goto Tetromino_36
+label Tetromino_37
+label Tetromino_36
+    goto Tetromino_34
+label Tetromino_35
+label Tetromino_34
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Tetromino_28
+label Tetromino_29
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Tetromino_26
+label Tetromino_27
+    push pointer 0
+    push constant 0
+    call Tetromino.show 2
+    pop temp 0
+    push this 1
+    push argument 1
+    add
+    pop this 1
+    push pointer 0
+    push constant 1
+    neg
+    call Tetromino.show 2
+    pop temp 0
+    push constant 0
+    return
+function Tetromino.rotate 7
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 3
+    call Tetromino.tiles 2
+    pop local 5
+    push this 0
+    call Tetromino.size 1
+    pop local 3
+    push this 3
+    push argument 1
+    add
+    push constant 3
+    and
+    pop local 4
+    push this 0
+    push local 4
+    call Tetromino.tiles 2
+    pop local 6
+label Tetromino_38
+    push local 1
+    push local 3
+    lt
+    not
+    if-goto Tetromino_39
+    push constant 0
+    pop local 0
+label Tetromino_40
+    push local 0
+    push local 3
+    lt
+    not
+    if-goto Tetromino_41
+    push local 2
+    push local 6
+    add
+    pop pointer 1
+    push that 0
+    not
+    if-goto Tetromino_43
+    push local 2
+    push local 5
+    add
+    pop pointer 1
+    push that 0
+    not
+    not
+    if-goto Tetromino_45
+    push this 4
+    push this 1
+    push local 0
+    add
+    push this 2
+    push local 1
+    sub
+    call Board.isFull 3
+    not
+    if-goto Tetromino_47
+    push constant 0
+    return
+    goto Tetromino_46
+label Tetromino_47
+label Tetromino_46
+    goto Tetromino_44
+label Tetromino_45
+label Tetromino_44
+    goto Tetromino_42
+label Tetromino_43
+label Tetromino_42
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Tetromino_40
+label Tetromino_41
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Tetromino_38
+label Tetromino_39
+    push pointer 0
+    push constant 0
+    call Tetromino.show 2
+    pop temp 0
+    push local 4
+    pop this 3
+    push pointer 0
+    push constant 1
+    neg
+    call Tetromino.show 2
+    pop temp 0
+    push constant 0
+    return
+function Tetromino.tiles 0
+    push argument 0
+    push constant 0
+    eq
+    not
+    if-goto Tetromino_49
+    push argument 1
+    call I.tiles 1
+    return
+    goto Tetromino_48
+label Tetromino_49
+label Tetromino_48
+    push argument 0
+    push constant 1
+    eq
+    not
+    if-goto Tetromino_51
+    push argument 1
+    call J.tiles 1
+    return
+    goto Tetromino_50
+label Tetromino_51
+label Tetromino_50
+    push argument 0
+    push constant 2
+    eq
+    not
+    if-goto Tetromino_53
+    push argument 1
+    call L.tiles 1
+    return
+    goto Tetromino_52
+label Tetromino_53
+label Tetromino_52
+    push argument 0
+    push constant 3
+    eq
+    not
+    if-goto Tetromino_55
+    push argument 1
+    call O.tiles 1
+    return
+    goto Tetromino_54
+label Tetromino_55
+label Tetromino_54
+    push argument 0
+    push constant 4
+    eq
+    not
+    if-goto Tetromino_57
+    push argument 1
+    call S.tiles 1
+    return
+    goto Tetromino_56
+label Tetromino_57
+label Tetromino_56
+    push argument 0
+    push constant 5
+    eq
+    not
+    if-goto Tetromino_59
+    push argument 1
+    call T.tiles 1
+    return
+    goto Tetromino_58
+label Tetromino_59
+label Tetromino_58
+    push argument 1
+    call Z.tiles 1
+    return
+function Tetromino.size 0
+    push argument 0
+    push constant 0
+    eq
+    not
+    if-goto Tetromino_61
+    call I.size 0
+    return
+    goto Tetromino_60
+label Tetromino_61
+label Tetromino_60
+    push argument 0
+    push constant 1
+    eq
+    not
+    if-goto Tetromino_63
+    call J.size 0
+    return
+    goto Tetromino_62
+label Tetromino_63
+label Tetromino_62
+    push argument 0
+    push constant 2
+    eq
+    not
+    if-goto Tetromino_65
+    call L.size 0
+    return
+    goto Tetromino_64
+label Tetromino_65
+label Tetromino_64
+    push argument 0
+    push constant 3
+    eq
+    not
+    if-goto Tetromino_67
+    call O.size 0
+    return
+    goto Tetromino_66
+label Tetromino_67
+label Tetromino_66
+    push argument 0
+    push constant 4
+    eq
+    not
+    if-goto Tetromino_69
+    call S.size 0
+    return
+    goto Tetromino_68
+label Tetromino_69
+label Tetromino_68
+    push argument 0
+    push constant 5
+    eq
+    not
+    if-goto Tetromino_71
+    call T.size 0
+    return
+    goto Tetromino_70
+label Tetromino_71
+label Tetromino_70
+    call Z.size 0
+    return

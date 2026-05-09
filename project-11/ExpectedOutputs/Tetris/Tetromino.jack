@@ -1,0 +1,252 @@
+class Tetromino {
+    field int type, col, row, rotation;
+    field Board board;
+
+    function void init() {
+        do I.init();
+        do J.init();
+        do L.init();
+        do O.init();
+        do S.init();
+        do T.init();
+        do Z.init();
+        return;
+    }
+
+    constructor Tetromino new(int typeArg, int colArg, int rowArg, Board boardArg) {
+        let type = typeArg;
+        let col = colArg;
+        let row = rowArg;
+        let board = boardArg;
+        let rotation = 0;
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method boolean reset(int typeArg, int colArg, int rowArg) {
+        var int x, y, i, size;
+        var Array tiles;
+
+        let type = typeArg;
+        let col = colArg;
+        let row = rowArg;
+        let rotation = 0;
+
+        let tiles = Tetromino.tiles(type, rotation);
+        let size = Tetromino.size(type);
+
+        while (y < size) {
+            let x = 0;
+
+            while (x < size) {
+                if (tiles[i]) {
+                    if (board.isFull(col + x, row - y)) {
+                        return false;
+                    }
+                }
+
+                let x = x + 1;
+                let i = i + 1;
+            }
+
+            let y = y + 1;
+        }
+
+        return true;
+    }
+
+    method void show(boolean fill) {
+        var int x, y, i, size;
+        var Array tiles;
+
+        let tiles = Tetromino.tiles(type, rotation);
+        let size = Tetromino.size(type);
+
+        do board.setFill(fill);
+
+        while (y < size) {
+            let x = 0;
+
+            while (x < size) {
+                if (tiles[i]) {
+                    do board.fill(col + x, row - y);
+                }
+
+                let x = x + 1;
+                let i = i + 1;
+            }
+
+            let y = y + 1;
+        }
+
+        return;
+    }
+
+    method boolean step() {
+        var int x, y, i, size, max, tile;
+        var Array tiles;
+
+        let tiles = Tetromino.tiles(type, rotation);
+        let size = Tetromino.size(type);
+        let max = size - 1;
+
+        while (y < size) {
+            let x = 0;
+
+            while (x < size) {
+                let tile = tiles[i];
+
+                if (y < max) {
+                    if (tile & tiles[i + size]) {
+                        let tile = false;
+                    }
+                }
+
+                if (tile) {
+                    if (board.isFull(col + x, (row - y) - 1)) {
+                        return false;
+                    }
+                }
+
+                let x = x + 1;
+                let i = i + 1;
+            }
+
+            let y = y + 1;
+        }
+
+        do show(false);
+        let row = row - 1;
+        do show(true);
+
+        return true;
+    }
+
+    // offset should be -1 for moving left, +1 for moving right.
+    method void move(int offset) {
+        var int x, y, i, size, max, tile;
+        var Array tiles;
+
+        let tiles = Tetromino.tiles(type, rotation);
+        let size = Tetromino.size(type);
+        let max = size - 1;
+
+        while (y < size) {
+            let x = 0;
+
+            while (x < size) {
+                let tile = tiles[i];
+
+                // Here we make the simplifying assumption that offset will
+                // only ever be -1 or +1.
+                if (((offset < 0) & (x > 0)) | ((offset > 0) & (x < max))) {
+                    if (tile & tiles[i + offset]) {
+                        let tile = false;
+                    }
+                }
+
+                if (tile) {
+                    if (board.isFull((col + x) + offset, row - y)) {
+                        return;
+                    }
+                }
+
+                let x = x + 1;
+                let i = i + 1;
+            }
+
+            let y = y + 1;
+        }
+
+        do show(false);
+        let col = col + offset;
+        do show(true);
+
+        return;
+    }
+
+    // direction should be +1 for clockwise rotation, -1 for counter-clockwise.
+    method void rotate(int direction) {
+        var int x, y, i, size, nextRotation;
+        var Array cur, next;
+
+        let cur = Tetromino.tiles(type, rotation);
+        let size = Tetromino.size(type);
+
+        let nextRotation = (rotation + direction) & 3; // (rotation + direction) mod 4
+        let next = Tetromino.tiles(type, nextRotation); //FIXME
+
+        while (y < size) {
+            let x = 0;
+
+            while (x < size) {
+                if (next[i]) {
+                    if (~cur[i]) {
+                        if (board.isFull(col + x, row - y)) {
+                            return;
+                        }
+                    }
+                }
+
+                let x = x + 1;
+                let i = i + 1;
+            }
+
+            let y = y + 1;
+        }
+
+        do show(false);
+        let rotation = nextRotation;
+        do show(true);
+
+        return;
+    }
+
+    function Array tiles(int type, int rotation) {
+        if (type = 0) {
+            return I.tiles(rotation);
+        }
+        if (type = 1) {
+            return J.tiles(rotation);
+        }
+        if (type = 2) {
+            return L.tiles(rotation);
+        }
+        if (type = 3) {
+            return O.tiles(rotation);
+        }
+        if (type = 4) {
+            return S.tiles(rotation);
+        }
+        if (type = 5) {
+            return T.tiles(rotation);
+        }
+        return Z.tiles(rotation); // type = 6
+    }
+
+    function int size(int type) {
+        if (type = 0) {
+            return I.size();
+        }
+        if (type = 1) {
+            return J.size();
+        }
+        if (type = 2) {
+            return L.size();
+        }
+        if (type = 3) {
+            return O.size();
+        }
+        if (type = 4) {
+            return S.size();
+        }
+        if (type = 5) {
+            return T.size();
+        }
+        return Z.size(); // type = 6
+    }
+}

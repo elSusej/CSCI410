@@ -1,0 +1,314 @@
+function Grid.init 0
+push constant 16384
+pop static 0
+push constant 8
+call Init.newArray 1
+pop static 1
+push constant 0
+push static 1
+add
+push constant 16
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push static 1
+add
+push constant 4095
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push static 1
+add
+push constant 4096
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push static 1
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push static 1
+add
+push constant 256
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push static 1
+add
+push constant 15
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Grid.drawOutline 1
+push constant 76
+pop local 0
+label WHILE_8
+push local 0
+push constant 8128
+lt
+not
+if-goto WHILE_END_8
+push local 0
+push static 0
+add
+push constant 4
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 32
+add
+pop local 0
+goto WHILE_8
+label WHILE_END_8
+push constant 83
+pop local 0
+label WHILE_9
+push local 0
+push constant 8128
+lt
+not
+if-goto WHILE_END_9
+push local 0
+push static 0
+add
+push constant 8192
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 32
+add
+pop local 0
+goto WHILE_9
+label WHILE_END_9
+push constant 0
+return
+function Grid.drawTile 4
+push argument 1
+push constant 32
+call Math.multiply 2
+push argument 0
+push constant 16
+call Math.divide 2
+add
+pop local 0
+push local 0
+push constant 384
+add
+pop local 1
+push argument 2
+push argument 2
+add
+pop argument 2
+push argument 2
+push static 1
+add
+pop pointer 1
+push that 0
+pop local 2
+push argument 2
+push constant 1
+add
+push static 1
+add
+pop pointer 1
+push that 0
+pop local 3
+push argument 3
+not
+if-goto IF_FALSE_5
+label WHILE_10
+push local 0
+push local 1
+lt
+not
+if-goto WHILE_END_10
+push local 0
+push static 0
+add
+push local 0
+push static 0
+add
+pop pointer 1
+push that 0
+push local 2
+or
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+push static 0
+add
+push local 0
+push static 0
+add
+pop pointer 1
+push that 0
+push local 3
+or
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 31
+add
+pop local 0
+goto WHILE_10
+label WHILE_END_10
+goto IF_END_5
+label IF_FALSE_5
+push local 2
+not
+pop local 2
+push local 3
+not
+pop local 3
+label WHILE_11
+push local 0
+push local 1
+lt
+not
+if-goto WHILE_END_11
+push local 0
+push static 0
+add
+push local 0
+push static 0
+add
+pop pointer 1
+push that 0
+push local 2
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+push static 0
+add
+push local 0
+push static 0
+add
+pop pointer 1
+push that 0
+push local 3
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 31
+add
+pop local 0
+goto WHILE_11
+label WHILE_END_11
+label IF_END_5
+push constant 0
+return
+function Grid.drawPreview 7
+push constant 106
+pop local 4
+label WHILE_12
+push local 1
+push constant 4
+lt
+not
+if-goto WHILE_END_12
+push constant 0
+pop local 0
+push constant 420
+pop local 3
+label WHILE_13
+push local 0
+push constant 4
+lt
+not
+if-goto WHILE_END_13
+push local 0
+push constant 3
+and
+pop local 5
+push local 1
+push argument 1
+lt
+push local 0
+push argument 1
+lt
+and
+not
+if-goto IF_FALSE_6
+push local 2
+push argument 0
+add
+pop pointer 1
+push that 0
+pop local 6
+push local 2
+push constant 1
+add
+pop local 2
+goto IF_END_6
+label IF_FALSE_6
+push constant 0
+pop local 6
+label IF_END_6
+push local 3
+push local 4
+push local 5
+push local 6
+call Grid.drawTile 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+push local 3
+push constant 12
+add
+pop local 3
+goto WHILE_13
+label WHILE_END_13
+push local 1
+push constant 1
+add
+pop local 1
+push local 4
+push constant 12
+add
+pop local 4
+goto WHILE_12
+label WHILE_END_12
+push constant 0
+return

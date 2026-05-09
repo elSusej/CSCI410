@@ -1,0 +1,37 @@
+function Main.main 2
+call Tetromino.init 0
+pop temp 0
+call Grid.init 0
+pop temp 0
+call Random.init 0
+pop temp 0
+label WHILE_15
+push constant 0
+not
+not
+if-goto WHILE_END_15
+push constant 0
+pop local 1
+call TetrisGame.new 0
+pop local 0
+push local 0     // push object named game
+call TetrisGame.run 1
+pop temp 0
+push local 0     // push object named game
+call TetrisGame.dispose 1
+pop temp 0
+label WHILE_16
+push local 1
+push constant 128
+eq
+not
+not
+if-goto WHILE_END_16
+call Keyboard.keyPressed 0
+pop local 1
+goto WHILE_16
+label WHILE_END_16
+goto WHILE_15
+label WHILE_END_15
+push constant 0
+return
